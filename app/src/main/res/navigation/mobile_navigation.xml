@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_cadastro_paciente">
+
+    <fragment
+        android:id="@+id/nav_cadastro_paciente"
+        android:name="com.example.appconsultorio.ui.paciente.PacienteFragment"
+        android:label="Cadastro do Paciente"
+        tools:layout="@layout/fragment_paciente" />
+
+    <fragment
+        android:id="@+id/nav_relatorio_paciente"
+        android:name="com.example.appconsultorio.ui.relatoriopaciente.RelatorioPacienteFragment"
+        android:label="Relatório do Paciente"
+        tools:layout="@layout/fragment_relatorio_paciente" />
+
+    <fragment
+        android:id="@+id/nav_cadastro_consulta"
+        android:name="com.example.appconsultorio.ui.consulta.ConsultaFragment"
+        android:label="Cadastro de Consulta"
+        tools:layout="@layout/fragment_consulta" />
+
+    <fragment
+        android:id="@+id/nav_relatorio_consulta"
+        android:name="com.example.appconsultorio.ui.relatorioconsulta.RelatorioConsultaFragment"
+        android:label="Relatório de Consultas"
+        tools:layout="@layout/fragment_relatorio_consulta"
+        />
+</navigation>

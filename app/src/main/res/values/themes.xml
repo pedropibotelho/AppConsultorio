@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AppConsultorio" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/dark_blue</item>
+        <item name="colorPrimaryVariant">@color/dark_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+    </style>
+
+    <style name="Theme.AppConsultorio" parent="Base.Theme.AppConsultorio" />
+    <style name="Theme.AppConsultorio.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.AppConsultorio.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.AppConsultorio.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

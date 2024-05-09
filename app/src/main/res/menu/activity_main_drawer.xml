@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_cadastro_paciente"
+            android:icon="@drawable/paciente"
+            android:title="Cadastro Paciente" />
+        <item
+            android:id="@+id/nav_relatorio_paciente"
+            android:icon="@drawable/ic_relatorio"
+            android:title="Relatório do Paciente" />
+        <item
+            android:id="@+id/nav_cadastro_consulta"
+            android:icon="@drawable/consulta"
+            android:title="Cadastro Consulta" />
+        <item
+            android:id="@+id/nav_relatorio_consulta"
+            android:icon="@drawable/ic_relatorio"
+            android:title="Relatório de Consultas"/>
+    </group>
+</menu>
