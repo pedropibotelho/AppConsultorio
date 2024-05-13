@@ -23,7 +23,7 @@ public class TelaPrincipal extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityTelaPrincipalBinding binding;
-    Button btn;
+    Button btnCadastrar;
     private SQLiteDatabase bancoDados;
 
     @Override
@@ -49,8 +49,8 @@ public class TelaPrincipal extends AppCompatActivity {
 
         criarTabelas();
 
-        btn = (Button) findViewById(R.id.butao_cadastrar);
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnCadastrar = (Button) findViewById(R.id.butao_cadastrar);
+        btnCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cadastrarPaciente();
@@ -122,7 +122,6 @@ public class TelaPrincipal extends AppCompatActivity {
         String telefoneText = edtTelefone.getText().toString();
         String cpfText = edtCPF.getText().toString();
 
-
         if(nomePacienteText.isEmpty() || dataNascimentoText.isEmpty() || telefoneText.isEmpty() || cpfText.isEmpty()){
             Toast.makeText(this, "Preencha todos os campos para realizar o cadastro!", Toast.LENGTH_SHORT).show();
         }else{
@@ -137,6 +136,10 @@ public class TelaPrincipal extends AppCompatActivity {
                 if (count == 0) {
                     bancoDados.execSQL("INSERT INTO paciente (nome, data_nascimento, telefone, cpf) VALUES (?, ?, ?, ?)", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
                     Toast.makeText(this, "Paciente cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                    edtNomePaciente.setText("");
+                    edtDataNascimento.setText("");
+                    edtTelefone.setText("");
+                    edtCPF.setText("");
                 } else {
                     Toast.makeText(this, "Paciente já cadastrado!", Toast.LENGTH_SHORT).show();
                 }
@@ -148,4 +151,5 @@ public class TelaPrincipal extends AppCompatActivity {
             }
         }
     }
+
 }
