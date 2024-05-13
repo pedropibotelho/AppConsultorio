@@ -61,7 +61,6 @@ public class FormLogin extends AppCompatActivity {
 
         SQLiteDatabase bancoDados = openOrCreateDatabase("appconsultorio", MODE_PRIVATE, null);
 
-        // Consulta para verificar se o usuário e senha correspondem
         Cursor cursor = bancoDados.rawQuery("SELECT COUNT(*) FROM login WHERE user=? AND senha=?", new String[]{digitUser, digitSenha});
         cursor.moveToFirst();
         int count = cursor.getInt(0);

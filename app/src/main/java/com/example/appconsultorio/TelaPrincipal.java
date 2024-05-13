@@ -1,5 +1,7 @@
 package com.example.appconsultorio;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -20,8 +22,9 @@ import com.example.appconsultorio.databinding.ActivityTelaPrincipalBinding;
 public class TelaPrincipal extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-private ActivityTelaPrincipalBinding binding;
+    private ActivityTelaPrincipalBinding binding;
     Button btn;
+    private SQLiteDatabase bancoDados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,8 @@ private ActivityTelaPrincipalBinding binding;
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_tela_principal);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        criarTabelas();
 
         btn = (Button) findViewById(R.id.butao_cadastrar);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +71,46 @@ private ActivityTelaPrincipalBinding binding;
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    public void criarTabelas() {
+        try {
+            bancoDados = openOrCreateDatabase("appconsultorio", MODE_PRIVATE, null);
+
+            // Cria tabela Paciente se não existir
+            Cursor cursorPaciente = bancoDados.rawQuery("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='paciente'", null);
+            cursorPaciente.moveToFirst();
+            int pacienteTableCount = cursorPaciente.getInt(0);
+            cursorPaciente.close();
+
+            if (pacienteTableCount == 0) {
+                bancoDados.execSQL("CREATE TABLE IF NOT EXISTS paciente("+
+                        " id INTEGER PRIMARY KEY AUTOINCREMENT" +
+                        ", nome VARCHAR" +
+                        ", data_nascimento DATE" +
+                        ", telefone VARCHAR" +
+                        ", cpf VARCHAR)");
+            }
+
+            // Cria tabela Consulta se não existir
+            Cursor cursorConsulta = bancoDados.rawQuery("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='consulta'", null);
+            cursorConsulta.moveToFirst();
+            int consultaTableCount = cursorConsulta.getInt(0);
+            cursorConsulta.close();
+
+            if (consultaTableCount == 0) {
+                bancoDados.execSQL("CREATE TABLE IF NOT EXISTS consulta("+
+                        " id INTEGER PRIMARY KEY AUTOINCREMENT" +
+                        ", id_paciente INTEGER" +
+                        ", data_procedimento DATE" +
+                        ", procedimento VARCHAR" +
+                        ", FOREIGN KEY (id_paciente) REFERENCES paciente(id))");
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void cadastrarPaciente(){
         EditText edtNomePaciente = findViewById(R.id.edit_nome_paciente);
