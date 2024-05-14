@@ -65,7 +65,7 @@ public class TelaPrincipal extends AppCompatActivity {
             }
         });
 
-       /* AutoCompleteTextView autoeditNomePaciente = findViewById(R.id.autoedit_nome_relatorio);
+      /*AutoCompleteTextView autoeditNomePaciente = findViewById(R.id.autoedit_nome_relatorio);
         autoeditNomePaciente.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
