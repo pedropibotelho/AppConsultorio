@@ -21,7 +21,6 @@ public class RelatorioPacienteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_relatorio_paciente, container, false);
         AutoCompleteTextView autoCompleteTextView = rootView.findViewById(R.id.autoedit_nome_relatorio);
-        // Agora você pode usar o autoCompleteTextView normalmente
         return rootView;
     }
     
