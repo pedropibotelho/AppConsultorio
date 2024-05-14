@@ -1,10 +1,15 @@
 package com.example.appconsultorio;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,11 +24,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.appconsultorio.databinding.ActivityTelaPrincipalBinding;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TelaPrincipal extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityTelaPrincipalBinding binding;
-    Button btnCadastrar;
+    Button btn;
     private SQLiteDatabase bancoDados;
 
     @Override
@@ -49,13 +57,33 @@ public class TelaPrincipal extends AppCompatActivity {
 
         criarTabelas();
 
-        btnCadastrar = (Button) findViewById(R.id.butao_cadastrar);
-        btnCadastrar.setOnClickListener(new View.OnClickListener() {
+        btn = (Button) findViewById(R.id.butao_cadastrar);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cadastrarPaciente();
             }
         });
+
+       /* AutoCompleteTextView autoeditNomePaciente = findViewById(R.id.autoedit_nome_relatorio);
+        autoeditNomePaciente.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                completarNomePaciente(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+        });*/
+
     }
 
     @Override
@@ -91,7 +119,6 @@ public class TelaPrincipal extends AppCompatActivity {
                         ", cpf VARCHAR)");
             }
 
-            // Cria tabela Consulta se não existir
             Cursor cursorConsulta = bancoDados.rawQuery("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='consulta'", null);
             cursorConsulta.moveToFirst();
             int consultaTableCount = cursorConsulta.getInt(0);
@@ -151,5 +178,34 @@ public class TelaPrincipal extends AppCompatActivity {
             }
         }
     }
+
+    /*public void completarNomePaciente(String filtro){
+        try {
+            SQLiteDatabase bancoDados = openOrCreateDatabase("appconsultorio", MODE_PRIVATE, null);
+
+            Cursor cursor = bancoDados.rawQuery("SELECT nome FROM paciente WHERE nome LIKE ?", new String[]{"%" + filtro + "%"});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                List<String> nomesPacientes = new ArrayList<>();
+
+                while(cursor.moveToNext()){
+                    nomesPacientes.add(cursor.getString(0));
+                }
+
+                cursor.close();
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, nomesPacientes);
+                AutoCompleteTextView autoeditNomeRelatorio = findViewById(R.id.autoedit_nome_relatorio);
+                autoeditNomeRelatorio.setAdapter(adapter);
+            } else {
+                Toast.makeText(this, "Nenhum paciente encontrado!", Toast.LENGTH_SHORT).show();
+            }
+
+            bancoDados.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Erro ao consultar pacientes!", Toast.LENGTH_SHORT).show();
+        }
+    }*/
 
 }
