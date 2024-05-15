@@ -27,7 +27,7 @@ public class RelatorioPacienteFragment extends Fragment {
     private static final String TAG = "RelatorioPacienteFrag";
     private FragmentRelatorioPacienteBinding binding;
     private SQLiteDatabase db;
-    private Button btnProcurar;
+
 
     @Override
     // Dentro do método onCreateView em RelatorioPacienteFragment.java
@@ -54,6 +54,16 @@ public class RelatorioPacienteFragment extends Fragment {
                 // Obter o nome do paciente do AutoCompleteTextView
                 String nomePaciente = autoCompleteTextView.getText().toString().trim();
                 consultarPacientes(nomePaciente);
+            }
+        });
+
+        Button btnExcluir = rootView.findViewById(R.id.butao_excluir_paciente);
+
+        btnExcluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nomePaciente = autoCompleteTextView.getText().toString().trim();
+                excluirPaciente(nomePaciente);
             }
         });
 
@@ -102,6 +112,7 @@ public class RelatorioPacienteFragment extends Fragment {
             // Realizar a busca no banco de dados pelo nome do paciente
             Cursor cursor = db.rawQuery("SELECT * FROM paciente WHERE nome=?", new String[]{nomePaciente});
 
+
             // Verificar se o cursor tem resultados
             if (cursor.moveToFirst()) {
                 // Preencher os EditTexts com as informações do paciente
@@ -115,23 +126,61 @@ public class RelatorioPacienteFragment extends Fragment {
                 edtTelefone.setText(cursor.getString(cursor.getColumnIndex("telefone")));
                 edtCPF.setText(cursor.getString(cursor.getColumnIndex("cpf")));
 
-                edtNomePaciente.setFocusable(true);
-                edtNomePaciente.setFocusableInTouchMode(true);
-                edtDataNascimento.setFocusable(true);
-                edtDataNascimento.setFocusableInTouchMode(true);
-                edtTelefone.setFocusable(true);
-                edtTelefone.setFocusableInTouchMode(true);
-                edtCPF.setFocusable(true);
-                edtCPF.setFocusableInTouchMode(true);
-
+                editTextComportamento(true);
                 // Fechar o cursor
                 cursor.close();
                 Toast.makeText(getContext(), "Paciente consultado", Toast.LENGTH_SHORT).show();
             } else {
+                editTextComportamento(false);
                 Toast.makeText(getContext(), "Paciente não encontrado!", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(getContext(), "Digite o nome do paciente!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void excluirPaciente(String nomePaciente){
+        if(!nomePaciente.isEmpty()){
+            int comandoDelete= db.delete("paciente", "nome=?", new String[]{nomePaciente});
+            if(comandoDelete>0){
+                Toast.makeText(getContext(), "Paciente excluído com sucesso!", Toast.LENGTH_SHORT).show();
+                editTextComportamento(false);
+            }else {
+                Toast.makeText(getContext(), "Paciente não encontrado!", Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            Toast.makeText(getContext(),"Digite o nome do paciente!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void editTextComportamento(boolean op){
+        EditText edtNomePaciente = getView().findViewById(R.id.edit_nome_paciente_relatorio);
+        EditText edtDataNascimento = getView().findViewById(R.id.edit_data_nascimento_relatorio);
+        EditText edtTelefone = getView().findViewById(R.id.edit_telefone_relatorio);
+        EditText edtCPF = getView().findViewById(R.id.edit_cpf_relatorio);
+
+        if(op){
+            edtNomePaciente.setFocusable(true);
+            edtNomePaciente.setFocusableInTouchMode(true);
+            edtDataNascimento.setFocusable(true);
+            edtDataNascimento.setFocusableInTouchMode(true);
+            edtTelefone.setFocusable(true);
+            edtTelefone.setFocusableInTouchMode(true);
+            edtCPF.setFocusable(true);
+            edtCPF.setFocusableInTouchMode(true);
+        }else{
+            edtNomePaciente.setText("");
+            edtDataNascimento.setText("");
+            edtTelefone.setText("");
+            edtCPF.setText("");
+            edtNomePaciente.setFocusable(false);
+            edtNomePaciente.setFocusableInTouchMode(false);
+            edtDataNascimento.setFocusable(false);
+            edtDataNascimento.setFocusableInTouchMode(false);
+            edtTelefone.setFocusable(false);
+            edtTelefone.setFocusableInTouchMode(false);
+            edtCPF.setFocusable(false);
+            edtCPF.setFocusableInTouchMode(false);
         }
     }
 
