@@ -57,13 +57,13 @@ public class TelaPrincipal extends AppCompatActivity {
 
         criarTabelas();
 
-        btn = (Button) findViewById(R.id.butao_cadastrar);
+       /* btn = (Button) findViewById(R.id.butao_cadastrar);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cadastrarPaciente();
             }
-        });
+        });*/
 
     }
 
@@ -120,7 +120,7 @@ public class TelaPrincipal extends AppCompatActivity {
     }
 
 
-    public void cadastrarPaciente(){
+    /*public void cadastrarPaciente(){
         EditText edtNomePaciente = findViewById(R.id.edit_nome_paciente);
         EditText edtDataNascimento = findViewById(R.id.edit_data_nascimento);
         EditText edtTelefone = findViewById(R.id.edit_telefone);
@@ -158,6 +158,6 @@ public class TelaPrincipal extends AppCompatActivity {
                 Toast.makeText(this, "Erro ao cadastrar paciente!", Toast.LENGTH_SHORT).show();
             }
         }
-    }
+    }*/
 
 }
