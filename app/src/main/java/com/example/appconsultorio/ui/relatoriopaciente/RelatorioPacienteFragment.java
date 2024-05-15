@@ -1,6 +1,7 @@
 package com.example.appconsultorio.ui.relatoriopaciente;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -64,6 +65,16 @@ public class RelatorioPacienteFragment extends Fragment {
             public void onClick(View v) {
                 String nomePaciente = autoCompleteTextView.getText().toString().trim();
                 excluirPaciente(nomePaciente);
+            }
+        });
+
+        Button btnAlterar = rootView.findViewById(R.id.butao_alterar_paciente);
+
+        btnAlterar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nomePaciente = autoCompleteTextView.getText().toString().trim();
+                alterarPaciente(nomePaciente);
             }
         });
 
@@ -150,6 +161,45 @@ public class RelatorioPacienteFragment extends Fragment {
             }
         }else {
             Toast.makeText(getContext(),"Digite o nome do paciente!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void alterarPaciente(String nomePaciente){
+        if(!nomePaciente.isEmpty()){
+            EditText edtNomePaciente = getView().findViewById(R.id.edit_nome_paciente_relatorio);
+            EditText edtDataNascimento = getView().findViewById(R.id.edit_data_nascimento_relatorio);
+            EditText edtTelefone = getView().findViewById(R.id.edit_telefone_relatorio);
+            EditText edtCPF = getView().findViewById(R.id.edit_cpf_relatorio);
+
+            String nomePacienteText = edtNomePaciente.getText().toString();
+            String dataNascimentoText = edtDataNascimento.getText().toString();
+            String telefoneText = edtTelefone.getText().toString();
+            String cpfText = edtCPF.getText().toString();
+
+            if(nomePacienteText.isEmpty() || dataNascimentoText.isEmpty() || telefoneText.isEmpty() || cpfText.isEmpty()){
+                Toast.makeText(getContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+            }else{
+                //Cursor cursor = db.rawQuery("UPDATE paciente SET nome=?, data_nascimento=?, telefone=?, cpf=? WHERE nome=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText, nomePaciente});
+                ContentValues valores = new ContentValues();
+                valores.put("nome", nomePacienteText);
+                valores.put("data_nascimento", dataNascimentoText);
+                valores.put("telefone", telefoneText);
+                valores.put("cpf", cpfText);
+
+                String whereClause = "nome=?";
+                String[] whereArgs = {nomePaciente};
+
+                int comandoAlterar = db.update("paciente", valores, whereClause, whereArgs);
+
+                if(comandoAlterar > 0){
+                    Toast.makeText(getContext(), "Paciente alterado com sucesso!", Toast.LENGTH_SHORT).show();
+                    editTextComportamento(false);
+                }else{
+                    Toast.makeText(getContext(), "Erro ao alterar!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }else {
+            Toast.makeText(getContext(), "Digite o nome do paciente!", Toast.LENGTH_SHORT).show();
         }
     }
 
