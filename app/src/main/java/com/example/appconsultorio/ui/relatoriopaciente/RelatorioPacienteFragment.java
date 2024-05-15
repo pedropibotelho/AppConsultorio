@@ -46,40 +46,14 @@ public class RelatorioPacienteFragment extends Fragment {
         // Encontrar o botão de procurar
         Button btnProcurar = rootView.findViewById(R.id.butao_procurar_paciente);
 
-        // Adicionar um OnClickListener ao botão de procurar
+
         btnProcurar.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("Range")
+
             @Override
             public void onClick(View v) {
                 // Obter o nome do paciente do AutoCompleteTextView
                 String nomePaciente = autoCompleteTextView.getText().toString().trim();
-
-                // Verificar se o nome do paciente não está vazio
-                if (!nomePaciente.isEmpty()) {
-                    // Realizar a busca no banco de dados pelo nome do paciente
-                    Cursor cursor = db.rawQuery("SELECT * FROM paciente WHERE nome=?", new String[]{nomePaciente});
-
-                    // Verificar se o cursor tem resultados
-                    if (cursor.moveToFirst()) {
-                        // Preencher os EditTexts com as informações do paciente
-                        EditText edtNomePaciente = rootView.findViewById(R.id.edit_nome_paciente_relatorio);
-                        EditText edtDataNascimento = rootView.findViewById(R.id.edit_data_nascimento_relatorio);
-                        EditText edtTelefone = rootView.findViewById(R.id.edit_telefone_relatorio);
-                        EditText edtCPF = rootView.findViewById(R.id.edit_cpf_relatorio);
-
-                        edtNomePaciente.setText(cursor.getString(cursor.getColumnIndex("nome")));
-                        edtDataNascimento.setText(cursor.getString(cursor.getColumnIndex("data_nascimento")));
-                        edtTelefone.setText(cursor.getString(cursor.getColumnIndex("telefone")));
-                        edtCPF.setText(cursor.getString(cursor.getColumnIndex("cpf")));
-
-                        // Fechar o cursor
-                        cursor.close();
-                    } else {
-                        Toast.makeText(getContext(), "Paciente não encontrado!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Digite o nome do paciente!", Toast.LENGTH_SHORT).show();
-                }
+                consultarPacientes(nomePaciente);
             }
         });
 
@@ -119,6 +93,46 @@ public class RelatorioPacienteFragment extends Fragment {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, names);
         textView.setAdapter(adapter);
+    }
+
+    @SuppressLint("Range")
+    public void consultarPacientes(String nomePaciente) {
+        // Verificar se o nome do paciente não está vazio
+        if (!nomePaciente.isEmpty()) {
+            // Realizar a busca no banco de dados pelo nome do paciente
+            Cursor cursor = db.rawQuery("SELECT * FROM paciente WHERE nome=?", new String[]{nomePaciente});
+
+            // Verificar se o cursor tem resultados
+            if (cursor.moveToFirst()) {
+                // Preencher os EditTexts com as informações do paciente
+                EditText edtNomePaciente = getView().findViewById(R.id.edit_nome_paciente_relatorio);
+                EditText edtDataNascimento = getView().findViewById(R.id.edit_data_nascimento_relatorio);
+                EditText edtTelefone = getView().findViewById(R.id.edit_telefone_relatorio);
+                EditText edtCPF = getView().findViewById(R.id.edit_cpf_relatorio);
+
+                edtNomePaciente.setText(cursor.getString(cursor.getColumnIndex("nome")));
+                edtDataNascimento.setText(cursor.getString(cursor.getColumnIndex("data_nascimento")));
+                edtTelefone.setText(cursor.getString(cursor.getColumnIndex("telefone")));
+                edtCPF.setText(cursor.getString(cursor.getColumnIndex("cpf")));
+
+                edtNomePaciente.setFocusable(true);
+                edtNomePaciente.setFocusableInTouchMode(true);
+                edtDataNascimento.setFocusable(true);
+                edtDataNascimento.setFocusableInTouchMode(true);
+                edtTelefone.setFocusable(true);
+                edtTelefone.setFocusableInTouchMode(true);
+                edtCPF.setFocusable(true);
+                edtCPF.setFocusableInTouchMode(true);
+
+                // Fechar o cursor
+                cursor.close();
+                Toast.makeText(getContext(), "Paciente consultado", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Paciente não encontrado!", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getContext(), "Digite o nome do paciente!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
