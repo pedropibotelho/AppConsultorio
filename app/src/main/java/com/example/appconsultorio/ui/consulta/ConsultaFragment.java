@@ -96,8 +96,29 @@ public class ConsultaFragment extends Fragment {
             if(nomePacineteConsultaText.isEmpty() || dataConsultaText.isEmpty() || procedimentoText.isEmpty()){
                 Toast.makeText(getContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
             }else{
-                
+                try {
+                    String idPacienteString = String.valueOf(idPaciente);
+                    Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM consulta WHERE id_paciente=? AND data_procedimento=? AND procedimento=?", new String[]{idPacienteString, dataConsultaText, procedimentoText});
+                    cursor.moveToFirst();
+                    int count = cursor.getInt(0);
+                    cursor.close();
+
+                    if(count == 0){
+                        db.execSQL("INSERT INTO consulta (id_paciente, data_procedimento, procedimento) VALUES (?, ?, ?)", new String[]{idPacienteString, dataConsultaText, procedimentoText});
+                        Toast.makeText(getContext(), "Consulta cadastrada com sucesso!", Toast.LENGTH_SHORT).show();
+                        edtNomePacineteConsulta.setText("");
+                        edtDataConsulta.setText("");
+                        edtProcedimento.setText("");
+                    }else {
+                        Toast.makeText(getContext(), "Consulta já cadastrada!", Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Erro ao cadastrar consulta!", Toast.LENGTH_SHORT).show();
+                }
             }
+        }else{
+            Toast.makeText(getContext(), "Paciente inválido!", Toast.LENGTH_SHORT).show();
         }
     }
 
