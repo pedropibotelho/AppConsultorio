@@ -57,14 +57,6 @@ public class TelaPrincipal extends AppCompatActivity {
 
         criarTabelas();
 
-       /* btn = (Button) findViewById(R.id.butao_cadastrar);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cadastrarPaciente();
-            }
-        });*/
-
     }
 
     @Override
@@ -118,46 +110,5 @@ public class TelaPrincipal extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
-    /*public void cadastrarPaciente(){
-        EditText edtNomePaciente = findViewById(R.id.edit_nome_paciente);
-        EditText edtDataNascimento = findViewById(R.id.edit_data_nascimento);
-        EditText edtTelefone = findViewById(R.id.edit_telefone);
-        EditText edtCPF = findViewById(R.id.edit_cpf);
-        String nomePacienteText = edtNomePaciente.getText().toString();
-        String dataNascimentoText = edtDataNascimento.getText().toString();
-        String telefoneText = edtTelefone.getText().toString();
-        String cpfText = edtCPF.getText().toString();
-
-        if(nomePacienteText.isEmpty() || dataNascimentoText.isEmpty() || telefoneText.isEmpty() || cpfText.isEmpty()){
-            Toast.makeText(this, "Preencha todos os campos para realizar o cadastro!", Toast.LENGTH_SHORT).show();
-        }else{
-            try {
-                SQLiteDatabase bancoDados = openOrCreateDatabase("appconsultorio", MODE_PRIVATE, null);
-
-                Cursor cursor = bancoDados.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? AND data_nascimento=? AND telefone=? AND cpf=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
-                cursor.moveToFirst();
-                int count = cursor.getInt(0);
-                cursor.close();
-
-                if (count == 0) {
-                    bancoDados.execSQL("INSERT INTO paciente (nome, data_nascimento, telefone, cpf) VALUES (?, ?, ?, ?)", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
-                    Toast.makeText(this, "Paciente cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-                    edtNomePaciente.setText("");
-                    edtDataNascimento.setText("");
-                    edtTelefone.setText("");
-                    edtCPF.setText("");
-                } else {
-                    Toast.makeText(this, "Paciente já cadastrado!", Toast.LENGTH_SHORT).show();
-                }
-
-                bancoDados.close();
-            }catch (Exception e){
-                e.printStackTrace();
-                Toast.makeText(this, "Erro ao cadastrar paciente!", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }*/
 
 }
