@@ -178,25 +178,46 @@ public class RelatorioPacienteFragment extends Fragment {
 
             if(nomePacienteText.isEmpty() || dataNascimentoText.isEmpty() || telefoneText.isEmpty() || cpfText.isEmpty()){
                 Toast.makeText(getContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+            } else if (dataNascimentoText.contains("_")||telefoneText.contains("_")||cpfText.contains("_")) {
+                Toast.makeText(getContext(), "Preencha todos os campos corretamente para realizar o cadastro!", Toast.LENGTH_SHORT).show();
             }else{
-                //Cursor cursor = db.rawQuery("UPDATE paciente SET nome=?, data_nascimento=?, telefone=?, cpf=? WHERE nome=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText, nomePaciente});
-                ContentValues valores = new ContentValues();
-                valores.put("nome", nomePacienteText);
-                valores.put("data_nascimento", dataNascimentoText);
-                valores.put("telefone", telefoneText);
-                valores.put("cpf", cpfText);
+                Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? AND data_nascimento=? AND telefone=? AND cpf=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
+                cursor.moveToFirst();
+                int count = cursor.getInt(0);
+                cursor.close();
 
-                String whereClause = "nome=?";
-                String[] whereArgs = {nomePaciente};
+                if (count == 0) {
+                    Cursor cursor2 = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? OR cpf=?", new String[]{nomePacienteText, cpfText});
+                    cursor2.moveToFirst();
+                    int count2 = cursor2.getInt(0);
+                    cursor2.close();
 
-                int comandoAlterar = db.update("paciente", valores, whereClause, whereArgs);
+                    if (count2 == 0) {
+                        //Cursor cursor = db.rawQuery("UPDATE paciente SET nome=?, data_nascimento=?, telefone=?, cpf=? WHERE nome=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText, nomePaciente});
+                        ContentValues valores = new ContentValues();
+                        valores.put("nome", nomePacienteText);
+                        valores.put("data_nascimento", dataNascimentoText);
+                        valores.put("telefone", telefoneText);
+                        valores.put("cpf", cpfText);
 
-                if(comandoAlterar > 0){
-                    Toast.makeText(getContext(), "Paciente alterado com sucesso!", Toast.LENGTH_SHORT).show();
-                    editTextComportamento(false);
-                }else{
-                    Toast.makeText(getContext(), "Erro ao alterar!", Toast.LENGTH_SHORT).show();
+                        String whereClause = "nome=?";
+                        String[] whereArgs = {nomePaciente};
+
+                        int comandoAlterar = db.update("paciente", valores, whereClause, whereArgs);
+
+                        if(comandoAlterar > 0){
+                            Toast.makeText(getContext(), "Paciente alterado com sucesso!", Toast.LENGTH_SHORT).show();
+                            editTextComportamento(false);
+                        }else{
+                            Toast.makeText(getContext(), "Erro ao alterar!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Já existe um paciente com esse nome/cpf!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Paciente já cadastrado!", Toast.LENGTH_SHORT).show();
                 }
+
             }
         }else {
             Toast.makeText(getContext(), "Digite o nome do paciente!", Toast.LENGTH_SHORT).show();

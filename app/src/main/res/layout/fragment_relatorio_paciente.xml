@@ -68,7 +68,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/butao_procurar_paciente" />
 
-    <EditText
+    <com.santalu.maskara.widget.MaskEditText
         android:id="@+id/edit_data_nascimento_relatorio"
         style="@style/Edit_Text"
         android:layout_width="0dp"
@@ -81,12 +81,15 @@
         android:inputType="text"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        app:mask="__/__/____"
+        app:maskCharacter="_"
+        app:maskStyle="completable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_nome_paciente_relatorio" />
 
-    <EditText
+    <com.santalu.maskara.widget.MaskEditText
         android:id="@+id/edit_telefone_relatorio"
         style="@style/Edit_Text"
         android:layout_width="0dp"
@@ -99,12 +102,15 @@
         android:inputType="text"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        app:mask="(__) _____-____"
+        app:maskCharacter="_"
+        app:maskStyle="completable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_data_nascimento_relatorio" />
 
-    <EditText
+    <com.santalu.maskara.widget.MaskEditText
         android:id="@+id/edit_cpf_relatorio"
         style="@style/Edit_Text"
         android:layout_width="0dp"
@@ -116,6 +122,9 @@
         android:inputType="text"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        app:mask="___.___.___-__"
+        app:maskCharacter="_"
+        app:maskStyle="completable"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

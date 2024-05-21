@@ -52,41 +52,42 @@ public class PacienteFragment extends Fragment {
         String telefoneText = edtTelefone.getText().toString();
         String cpfText = edtCPF.getText().toString();
 
+        // Verifica se os campos estão vazios
         if(nomePacienteText.isEmpty() || dataNascimentoText.isEmpty() || telefoneText.isEmpty() || cpfText.isEmpty()){
             Toast.makeText(getContext(), "Preencha todos os campos para realizar o cadastro!", Toast.LENGTH_SHORT).show();
-        }else{
+        } else if (dataNascimentoText.contains("_")||telefoneText.contains("_")||cpfText.contains("_")) {
+            Toast.makeText(getContext(), "Preencha todos os campos corretamente para realizar o cadastro!", Toast.LENGTH_SHORT).show();
+        }else {
             try {
-
                 Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? AND data_nascimento=? AND telefone=? AND cpf=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
                 cursor.moveToFirst();
                 int count = cursor.getInt(0);
                 cursor.close();
 
                 if (count == 0) {
-                    Cursor cursor2 = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? OR cpf=? ", new String[]{nomePacienteText, cpfText});
+                    Cursor cursor2 = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? OR cpf=?", new String[]{nomePacienteText, cpfText});
                     cursor2.moveToFirst();
                     int count2 = cursor2.getInt(0);
                     cursor2.close();
 
-                    if(count2 == 0) {
+                    if (count2 == 0) {
                         db.execSQL("INSERT INTO paciente (nome, data_nascimento, telefone, cpf) VALUES (?, ?, ?, ?)", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
                         Toast.makeText(getContext(), "Paciente cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
                         edtNomePaciente.setText("");
                         edtDataNascimento.setText("");
                         edtTelefone.setText("");
                         edtCPF.setText("");
-                    }else {
+                    } else {
                         Toast.makeText(getContext(), "Já existe um paciente com esse nome/cpf!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getContext(), "Paciente já cadastrado!", Toast.LENGTH_SHORT).show();
                 }
-
-                cursor.close();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(getContext(), "Erro ao cadastrar paciente!", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 }
