@@ -12,12 +12,18 @@
     tools:context=".ui.relatorioconsulta.RelatorioConsultaFragment">
 
     <TextView
-        android:id="@+id/txtFragRelatorioConsulta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Relatório de Consultas"
-        android:textSize="35sp"
-        />
+        android:id="@+id/text_relatorio_paciente"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:text="Relatório Consulta"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
