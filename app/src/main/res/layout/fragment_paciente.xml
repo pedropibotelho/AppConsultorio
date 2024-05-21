@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_cadastro_paciente" />
 
-    <EditText
+    <com.santalu.maskara.widget.MaskEditText
         android:id="@+id/edit_data_nascimento"
         style="@style/Edit_Text"
         android:layout_width="0dp"
@@ -52,12 +52,15 @@
         android:ems="10"
         android:hint="Data de Nascimento"
         android:inputType="text"
+        app:mask="__/__/____"
+        app:maskCharacter="_"
+        app:maskStyle="completable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_nome_paciente" />
 
-    <EditText
+    <com.santalu.maskara.widget.MaskEditText
         android:id="@+id/edit_telefone"
         style="@style/Edit_Text"
         android:layout_width="0dp"
@@ -68,12 +71,15 @@
         android:ems="10"
         android:hint="Telefone"
         android:inputType="text"
+        app:mask="(__) _____-____"
+        app:maskCharacter="_"
+        app:maskStyle="completable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_data_nascimento" />
 
-    <EditText
+    <com.santalu.maskara.widget.MaskEditText
         android:id="@+id/edit_cpf"
         style="@style/Edit_Text"
         android:layout_width="0dp"
@@ -83,6 +89,9 @@
         android:ems="10"
         android:hint="CPF"
         android:inputType="text"
+        app:mask="___.___.___-__"
+        app:maskCharacter="_"
+        app:maskStyle="completable"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

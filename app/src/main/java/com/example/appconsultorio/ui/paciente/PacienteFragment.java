@@ -63,12 +63,21 @@ public class PacienteFragment extends Fragment {
                 cursor.close();
 
                 if (count == 0) {
-                    db.execSQL("INSERT INTO paciente (nome, data_nascimento, telefone, cpf) VALUES (?, ?, ?, ?)", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
-                    Toast.makeText(getContext(), "Paciente cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-                    edtNomePaciente.setText("");
-                    edtDataNascimento.setText("");
-                    edtTelefone.setText("");
-                    edtCPF.setText("");
+                    Cursor cursor2 = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? OR cpf=? ", new String[]{nomePacienteText, cpfText});
+                    cursor2.moveToFirst();
+                    int count2 = cursor2.getInt(0);
+                    cursor2.close();
+
+                    if(count2 == 0) {
+                        db.execSQL("INSERT INTO paciente (nome, data_nascimento, telefone, cpf) VALUES (?, ?, ?, ?)", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
+                        Toast.makeText(getContext(), "Paciente cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                        edtNomePaciente.setText("");
+                        edtDataNascimento.setText("");
+                        edtTelefone.setText("");
+                        edtCPF.setText("");
+                    }else {
+                        Toast.makeText(getContext(), "Já existe um paciente com esse nome/cpf!", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getContext(), "Paciente já cadastrado!", Toast.LENGTH_SHORT).show();
                 }
