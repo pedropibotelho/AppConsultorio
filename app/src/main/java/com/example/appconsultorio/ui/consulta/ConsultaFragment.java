@@ -95,6 +95,8 @@ public class ConsultaFragment extends Fragment {
 
             if(nomePacineteConsultaText.isEmpty() || dataConsultaText.isEmpty() || procedimentoText.isEmpty()){
                 Toast.makeText(getContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+            }else if(dataConsultaText.contains("_")){
+                Toast.makeText(getContext(), "Preencha o campo de data de maneira correta", Toast.LENGTH_SHORT).show();
             }else{
                 try {
                     String idPacienteString = String.valueOf(idPaciente);

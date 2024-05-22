@@ -42,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_consulta" />
 
-    <EditText
+    <com.santalu.maskara.widget.MaskEditText
         android:id="@+id/edit_data_consulta"
         style="@style/Edit_Text"
         android:layout_width="0dp"
@@ -53,6 +53,9 @@
         android:ems="10"
         android:hint="Data da Consulta"
         android:inputType="text"
+        app:mask="__/__/____"
+        app:maskCharacter="_"
+        app:maskStyle="completable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
