@@ -22,7 +22,10 @@ import android.widget.Toast;
 import com.example.appconsultorio.R;
 import com.example.appconsultorio.databinding.FragmentConsultaBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class ConsultaFragment extends Fragment {
     private static final String TAG = "ConsultaFrag";
@@ -99,6 +102,15 @@ public class ConsultaFragment extends Fragment {
                 Toast.makeText(getContext(), "Preencha o campo de data de maneira correta", Toast.LENGTH_SHORT).show();
             }else{
                 try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    Date dataConsulta = sdf.parse(dataConsultaText);
+                    Date dataAtual = new Date();
+
+                    if(dataConsulta.before(dataAtual)){
+                        Toast.makeText(getContext(), "A data do procedimento não pode ser cadastrada!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     String idPacienteString = String.valueOf(idPaciente);
                     Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM consulta WHERE id_paciente=? AND data_procedimento=? AND procedimento=?", new String[]{idPacienteString, dataConsultaText, procedimentoText});
                     cursor.moveToFirst();

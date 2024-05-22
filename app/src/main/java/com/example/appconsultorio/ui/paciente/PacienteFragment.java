@@ -18,6 +18,10 @@ import com.example.appconsultorio.R;
 import com.example.appconsultorio.databinding.FragmentPacienteBinding;
 import com.example.appconsultorio.databinding.FragmentRelatorioPacienteBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class PacienteFragment extends Fragment {
     private static final String TAG = "PacienteFrag";
     private FragmentPacienteBinding binding;
@@ -59,6 +63,17 @@ public class PacienteFragment extends Fragment {
             Toast.makeText(getContext(), "Preencha todos os campos corretamente para realizar o cadastro!", Toast.LENGTH_SHORT).show();
         }else {
             try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                Date dataInicial = sdf.parse("01/01/1920");
+                Date dataAtual = new Date();
+                Date dataNascimento = sdf.parse(dataNascimentoText);
+
+                if(!dataNascimento.after(dataInicial) && dataNascimento.before(dataAtual)){
+                    Toast.makeText(getContext(), "Preencha uma data válida!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
                 Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? AND data_nascimento=? AND telefone=? AND cpf=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
                 cursor.moveToFirst();
                 int count = cursor.getInt(0);
