@@ -12,7 +12,6 @@
     android:background="@drawable/background"
     tools:context=".ui.consulta.ConsultaFragment">
 
-
     <TextView
         android:id="@+id/text_consulta"
         android:layout_width="200dp"
