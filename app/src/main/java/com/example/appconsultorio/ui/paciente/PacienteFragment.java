@@ -56,7 +56,6 @@ public class PacienteFragment extends Fragment {
         String telefoneText = edtTelefone.getText().toString();
         String cpfText = edtCPF.getText().toString();
 
-        // Verifica se os campos estão vazios
         if(nomePacienteText.isEmpty() || dataNascimentoText.isEmpty() || telefoneText.isEmpty() || cpfText.isEmpty()){
             Toast.makeText(getContext(), "Preencha todos os campos para realizar o cadastro!", Toast.LENGTH_SHORT).show();
         } else if (dataNascimentoText.contains("_")||telefoneText.contains("_")||cpfText.contains("_")) {
