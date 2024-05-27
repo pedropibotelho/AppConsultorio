@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".ModificarConsulta">
+
+    <TextView
+        android:id="@+id/text_modificar_consulta"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:text="Modificar Consultas"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.santalu.maskara.widget.MaskEditText
+        android:id="@+id/edit_data_consulta_procurar_modificar"
+        style="@style/Edit_Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Digite a data da Consulta"
+        android:inputType="text"
+        app:mask="__/__/____"
+        app:maskCharacter="_"
+        app:maskStyle="completable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_modificar_consulta" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/butao_procurar_paciente_modificar"
+        android:text="Procurar"
+        style="@style/ButtonLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_data_consulta_procurar_modificar"
+        />
+
+    <com.santalu.maskara.widget.MaskEditText
+        android:id="@+id/edit_data_consulta_modificar"
+        style="@style/Edit_Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Data da Consulta"
+        android:inputType="text"
+        app:mask="__/__/____"
+        app:maskCharacter="_"
+        app:maskStyle="completable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/butao_procurar_paciente_modificar" />
+
+    <EditText
+        android:id="@+id/edit_procedimento_consulta_modificar"
+        style="@style/Edit_Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Procedimento"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_data_consulta_modificar" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/butao_alterar_consulta_modificar"
+        android:text="Alterar"
+        style="@style/ButtonLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_procedimento_consulta_modificar"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/butao_excluir_consulta_modificar"
+        android:text="Alterar"
+        style="@style/ButtonLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/butao_alterar_consulta_modificar"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

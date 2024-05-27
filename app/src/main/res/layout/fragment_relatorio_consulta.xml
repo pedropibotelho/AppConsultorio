@@ -49,6 +49,15 @@
         app:layout_constraintTop_toBottomOf="@id/autoedit_nome_paciente_consulta_relatorio"
         />
 
+    <androidx.appcompat.widget.AppCompatButton
+    android:id="@+id/butao_modificar_consulta_relatorio"
+    android:text="Modificar Consultas"
+    style="@style/ButtonLogin"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/butao_procurar_paciente_relatorio"
+    />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleview_datas_consultas"
         style="@style/Edit_Text"
@@ -58,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/butao_procurar_paciente_relatorio"
+        app:layout_constraintTop_toBottomOf="@+id/butao_modificar_consulta_relatorio"
         app:layout_constraintVertical_bias="0.0" />
 
 

@@ -66,6 +66,14 @@ public class RelatorioConsultaFragment extends Fragment {
             }
         });
 
+        Button btnModificar = rootView.findViewById(R.id.butao_modificar_consulta_relatorio);
+        btnModificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nomePaciente = autoCompleteTextView.getText().toString();
+            }
+        });
+
         db = getActivity().openOrCreateDatabase("appconsultorio", getContext().MODE_PRIVATE, null);
         return rootView;
     }
