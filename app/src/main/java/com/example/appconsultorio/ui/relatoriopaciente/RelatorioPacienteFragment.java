@@ -28,6 +28,7 @@ public class RelatorioPacienteFragment extends Fragment {
     private static final String TAG = "RelatorioPacienteFrag";
     private FragmentRelatorioPacienteBinding binding;
     private SQLiteDatabase db;
+    String nomePacienteProcurado, cpfPacienteProcurado;
 
 
     @Override
@@ -137,6 +138,9 @@ public class RelatorioPacienteFragment extends Fragment {
                 edtTelefone.setText(cursor.getString(cursor.getColumnIndex("telefone")));
                 edtCPF.setText(cursor.getString(cursor.getColumnIndex("cpf")));
 
+                nomePacienteProcurado = edtNomePaciente.getText().toString();
+                cpfPacienteProcurado = edtCPF.getText().toString();
+
                 editTextComportamento(true);
                 // Fechar o cursor
                 cursor.close();
@@ -164,8 +168,8 @@ public class RelatorioPacienteFragment extends Fragment {
         }
     }
 
-    public void alterarPaciente(String nomePaciente){
-        if(!nomePaciente.isEmpty()){
+    public void alterarPaciente(String nomePaciente) {
+        if (!nomePaciente.isEmpty()) {
             EditText edtNomePaciente = getView().findViewById(R.id.edit_nome_paciente_relatorio);
             EditText edtDataNascimento = getView().findViewById(R.id.edit_data_nascimento_relatorio);
             EditText edtTelefone = getView().findViewById(R.id.edit_telefone_relatorio);
@@ -176,53 +180,44 @@ public class RelatorioPacienteFragment extends Fragment {
             String telefoneText = edtTelefone.getText().toString();
             String cpfText = edtCPF.getText().toString();
 
-            if(nomePacienteText.isEmpty() || dataNascimentoText.isEmpty() || telefoneText.isEmpty() || cpfText.isEmpty()){
+            if (nomePacienteText.isEmpty() || dataNascimentoText.isEmpty() || telefoneText.isEmpty() || cpfText.isEmpty()) {
                 Toast.makeText(getContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
-            } else if (dataNascimentoText.contains("_")||telefoneText.contains("_")||cpfText.contains("_")) {
+            } else if (dataNascimentoText.contains("_") || telefoneText.contains("_") || cpfText.contains("_")) {
                 Toast.makeText(getContext(), "Preencha todos os campos corretamente para realizar o cadastro!", Toast.LENGTH_SHORT).show();
-            }else{
-                Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? AND data_nascimento=? AND telefone=? AND cpf=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
+            } else {
+                // Verificar se já existe um paciente com o novo nome ou CPF, excluindo o paciente atual
+                Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE (nome=? OR cpf=?) AND nome<>?", new String[]{nomePacienteText, cpfText, nomePacienteProcurado});
                 cursor.moveToFirst();
                 int count = cursor.getInt(0);
                 cursor.close();
 
                 if (count == 0) {
-                    Cursor cursor2 = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? OR cpf=?", new String[]{nomePacienteText, cpfText});
-                    cursor2.moveToFirst();
-                    int count2 = cursor2.getInt(0);
-                    cursor2.close();
+                    ContentValues valores = new ContentValues();
+                    valores.put("nome", nomePacienteText);
+                    valores.put("data_nascimento", dataNascimentoText);
+                    valores.put("telefone", telefoneText);
+                    valores.put("cpf", cpfText);
 
-                    if (count2 == 0) {
-                        //Cursor cursor = db.rawQuery("UPDATE paciente SET nome=?, data_nascimento=?, telefone=?, cpf=? WHERE nome=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText, nomePaciente});
-                        ContentValues valores = new ContentValues();
-                        valores.put("nome", nomePacienteText);
-                        valores.put("data_nascimento", dataNascimentoText);
-                        valores.put("telefone", telefoneText);
-                        valores.put("cpf", cpfText);
+                    String whereClause = "nome=?";
+                    String[] whereArgs = {nomePaciente};
 
-                        String whereClause = "nome=?";
-                        String[] whereArgs = {nomePaciente};
+                    int comandoAlterar = db.update("paciente", valores, whereClause, whereArgs);
 
-                        int comandoAlterar = db.update("paciente", valores, whereClause, whereArgs);
-
-                        if(comandoAlterar > 0){
-                            Toast.makeText(getContext(), "Paciente alterado com sucesso!", Toast.LENGTH_SHORT).show();
-                            editTextComportamento(false);
-                        }else{
-                            Toast.makeText(getContext(), "Erro ao alterar!", Toast.LENGTH_SHORT).show();
-                        }
+                    if (comandoAlterar > 0) {
+                        Toast.makeText(getContext(), "Paciente alterado com sucesso!", Toast.LENGTH_SHORT).show();
+                        editTextComportamento(false);
                     } else {
-                        Toast.makeText(getContext(), "Já existe um paciente com esse nome/cpf!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Erro ao alterar!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "Paciente já cadastrado!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Já existe um paciente com esse nome ou CPF!", Toast.LENGTH_SHORT).show();
                 }
-
             }
-        }else {
+        } else {
             Toast.makeText(getContext(), "Digite o nome do paciente!", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     public void editTextComportamento(boolean op){
         EditText edtNomePaciente = getView().findViewById(R.id.edit_nome_paciente_relatorio);
