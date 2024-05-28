@@ -102,7 +102,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/butao_excluir_consulta_modificar"
-        android:text="Alterar"
+        android:text="Excluir"
         style="@style/ButtonLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

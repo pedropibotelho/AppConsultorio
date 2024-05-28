@@ -1,6 +1,7 @@
 package com.example.appconsultorio.ui.relatorioconsulta;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +22,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.appconsultorio.ModificarConsulta;
 import com.example.appconsultorio.R;
 import com.example.appconsultorio.databinding.FragmentRelatorioConsultaBinding;
 import com.example.appconsultorio.ui.consulta.Consulta;
@@ -71,6 +73,9 @@ public class RelatorioConsultaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String nomePaciente = autoCompleteTextView.getText().toString();
+                Intent intent = new Intent(getActivity(), ModificarConsulta.class);
+                intent.putExtra("nomePaciente", nomePaciente);
+                startActivity(intent);
             }
         });
 
