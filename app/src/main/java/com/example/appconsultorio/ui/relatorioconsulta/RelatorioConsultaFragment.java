@@ -41,6 +41,7 @@ public class RelatorioConsultaFragment extends Fragment {
     private RecyclerView recyclerView;
     private ConsultaAdapter consultaAdapter;
     private List<Consulta> consultaList = new ArrayList<>();
+    Button btnModificar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +69,8 @@ public class RelatorioConsultaFragment extends Fragment {
             }
         });
 
-        Button btnModificar = rootView.findViewById(R.id.butao_modificar_consulta_relatorio);
+        btnModificar = rootView.findViewById(R.id.butao_modificar_consulta_relatorio);
+        btnModificar.setEnabled(false);
         btnModificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +118,7 @@ public class RelatorioConsultaFragment extends Fragment {
 
     private void procurarConsultas(String nomePaciente){
         consultaList.clear();
+        btnModificar.setEnabled(false);
         int idPaciente = buscarIdPaciente(nomePaciente);
         if(idPaciente != -1) {
             String idPacienteString = String.valueOf(idPaciente);
@@ -128,6 +131,7 @@ public class RelatorioConsultaFragment extends Fragment {
                     consultaList.add(new Consulta(data, procedimento));
                 }
                 consultaAdapter.notifyDataSetChanged();
+                btnModificar.setEnabled(true);
                 Toast.makeText(getContext(), "Relatório de Consultas completo!", Toast.LENGTH_SHORT).show();
             } catch (SQLException e) {
                 Log.e(TAG, "Erro ao procurar consultas", e);
