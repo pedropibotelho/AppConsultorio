@@ -104,9 +104,9 @@ public class ConsultaFragment extends Fragment {
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                     Date dataConsulta = sdf.parse(dataConsultaText);
-                    Date dataAtual = new Date();
+                    Date dataPronta = sdf.parse("01/01/2000");
 
-                    if(dataConsulta.before(dataAtual)){
+                    if(dataConsulta.before(dataPronta)){
                         Toast.makeText(getContext(), "A data do procedimento não pode ser cadastrada!", Toast.LENGTH_SHORT).show();
                         return;
                     }

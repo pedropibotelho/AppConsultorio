@@ -20,7 +20,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class ModificarConsulta extends AppCompatActivity {
 
@@ -65,6 +68,24 @@ public class ModificarConsulta extends AppCompatActivity {
             public void onClick(View v) {
                 String dataAutoIncrement = autoCompleteTextView.getText().toString().trim();
                 consultarConsulta(dataAutoIncrement);
+            }
+        });
+
+        Button btnAlterar = findViewById(R.id.butao_alterar_consulta_modificar);
+        btnAlterar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String dataAutoIncrement = autoCompleteTextView.getText().toString().trim();
+                alterarConsulta(dataAutoIncrement);
+            }
+        });
+
+        Button btnExcluir = findViewById(R.id.butao_excluir_consulta_modificar);
+        btnExcluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String dataAutoIncrement = autoCompleteTextView.getText().toString().trim();
+                excluirConsulta(dataAutoIncrement);
             }
         });
 
@@ -184,6 +205,71 @@ public class ModificarConsulta extends AppCompatActivity {
             edtDataConsulta.setFocusableInTouchMode(false);
             edtProcedimento.setFocusable(false);
             edtProcedimento.setFocusableInTouchMode(false);
+        }
+    }
+
+    public void alterarConsulta(String dataAutoIncrement) {
+        if (!dataAutoIncrement.isEmpty()) {
+            String dataConsultaText = edtDataConsulta.getText().toString().trim();
+            String procedimentoText = edtProcedimento.getText().toString().trim();
+
+            if (dataConsultaText.isEmpty() || procedimentoText.isEmpty()) {
+                Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+            } else if (dataConsultaText.contains("_")) {
+                Toast.makeText(this, "Preencha todos os campos corretamente para realizar a alteração!", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    Date dataConsulta = sdf.parse(dataConsultaText);
+                    Date dataPronta = sdf.parse("01/01/2000");
+
+                    if (dataConsulta.before(dataPronta)) {
+                        Toast.makeText(this, "A data do procedimento não pode ser cadastrada!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Atualizar a consulta no banco de dados
+                    int idPaciente = buscarIdPaciente(nomePaciente);
+                    if (idPaciente != -1) {
+                        db.execSQL("UPDATE consulta SET data_procedimento = ?, procedimento = ? WHERE id_paciente = ? AND data_procedimento = ?",
+                                new Object[]{dataConsultaText, procedimentoText, idPaciente, dataAutoIncrement});
+
+                        Toast.makeText(this, "Consulta alterada com sucesso!", Toast.LENGTH_SHORT).show();
+                        editTextComportamento(false);
+                    } else {
+                        Toast.makeText(this, "Erro ao encontrar o paciente!", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Erro ao alterar consulta!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else {
+            Toast.makeText(this, "Preencha o campo de data!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void excluirConsulta(String dataAutoIncrement){
+        if (!dataAutoIncrement.isEmpty()) {
+            try {
+                // Obter o ID do paciente
+                int idPaciente = buscarIdPaciente(nomePaciente);
+                if (idPaciente != -1) {
+                    // Excluir a consulta no banco de dados
+                    db.execSQL("DELETE FROM consulta WHERE id_paciente = ? AND data_procedimento = ?", new Object[]{idPaciente, dataAutoIncrement});
+
+                    Toast.makeText(this, "Consulta excluída com sucesso!", Toast.LENGTH_SHORT).show();
+                    editTextComportamento(false);
+                } else {
+                    Toast.makeText(this, "Erro ao encontrar o paciente!", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Erro ao excluir consulta", e);
+                Toast.makeText(this, "Erro ao excluir consulta!", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Preencha o campo de data!", Toast.LENGTH_SHORT).show();
         }
     }
 }
