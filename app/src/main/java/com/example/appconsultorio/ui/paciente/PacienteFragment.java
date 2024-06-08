@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.appconsultorio.R;
 import com.example.appconsultorio.databinding.FragmentPacienteBinding;
-import com.example.appconsultorio.databinding.FragmentRelatorioPacienteBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,42 +59,40 @@ public class PacienteFragment extends Fragment {
             Toast.makeText(getContext(), "Preencha todos os campos para realizar o cadastro!", Toast.LENGTH_SHORT).show();
         } else if (dataNascimentoText.contains("_")||telefoneText.contains("_")||cpfText.contains("_")) {
             Toast.makeText(getContext(), "Preencha todos os campos corretamente para realizar o cadastro!", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 Date dataInicial = sdf.parse("01/01/1920");
                 Date dataAtual = new Date();
                 Date dataNascimento = sdf.parse(dataNascimentoText);
 
-                if(!dataNascimento.after(dataInicial) && dataNascimento.before(dataAtual)){
-                    Toast.makeText(getContext(), "Preencha uma data válida!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                if(dataNascimento.after(dataInicial) && dataNascimento.before(dataAtual)){
+                    Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? AND data_nascimento=? AND telefone=? AND cpf=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
+                    cursor.moveToFirst();
+                    int count = cursor.getInt(0);
+                    cursor.close();
 
+                    if (count == 0) {
+                        Cursor cursor2 = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? OR cpf=?", new String[]{nomePacienteText, cpfText});
+                        cursor2.moveToFirst();
+                        int count2 = cursor2.getInt(0);
+                        cursor2.close();
 
-                Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? AND data_nascimento=? AND telefone=? AND cpf=?", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
-                cursor.moveToFirst();
-                int count = cursor.getInt(0);
-                cursor.close();
-
-                if (count == 0) {
-                    Cursor cursor2 = db.rawQuery("SELECT COUNT(*) FROM paciente WHERE nome=? OR cpf=?", new String[]{nomePacienteText, cpfText});
-                    cursor2.moveToFirst();
-                    int count2 = cursor2.getInt(0);
-                    cursor2.close();
-
-                    if (count2 == 0) {
-                        db.execSQL("INSERT INTO paciente (nome, data_nascimento, telefone, cpf) VALUES (?, ?, ?, ?)", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
-                        Toast.makeText(getContext(), "Paciente cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-                        edtNomePaciente.setText("");
-                        edtDataNascimento.setText("");
-                        edtTelefone.setText("");
-                        edtCPF.setText("");
+                        if (count2 == 0) {
+                            db.execSQL("INSERT INTO paciente (nome, data_nascimento, telefone, cpf) VALUES (?, ?, ?, ?)", new String[]{nomePacienteText, dataNascimentoText, telefoneText, cpfText});
+                            Toast.makeText(getContext(), "Paciente cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                            edtNomePaciente.setText("");
+                            edtDataNascimento.setText("");
+                            edtTelefone.setText("");
+                            edtCPF.setText("");
+                        } else {
+                            Toast.makeText(getContext(), "Já existe um paciente com esse nome/cpf!", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(getContext(), "Já existe um paciente com esse nome/cpf!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Paciente já cadastrado!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "Paciente já cadastrado!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Preencha uma data válida!", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -103,5 +100,4 @@ public class PacienteFragment extends Fragment {
             }
         }
     }
-
 }

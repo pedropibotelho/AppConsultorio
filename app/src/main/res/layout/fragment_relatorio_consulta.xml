@@ -51,7 +51,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
     android:id="@+id/butao_modificar_consulta_relatorio"
-    android:text="Modificar Consultas"
+    android:text="Editar Consultas"
     style="@style/ButtonLogin"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
