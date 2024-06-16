@@ -159,9 +159,11 @@ public class ModificarConsulta extends AppCompatActivity {
     public void consultarConsulta(String dataAutoIncrement){
         if (!dataAutoIncrement.isEmpty()) {
             // Realizar a busca no banco de dados pelo nome do paciente
+            int idPaciente = buscarIdPaciente(nomePaciente);
+            String idPacienteString = String.valueOf(idPaciente);
             Cursor cursor = null;
             try {
-                cursor = db.rawQuery("SELECT * FROM consulta WHERE data_procedimento=?", new String[]{dataAutoIncrement});
+                cursor = db.rawQuery("SELECT * FROM consulta WHERE data_procedimento=? AND id_paciente = ?", new String[]{dataAutoIncrement, idPacienteString});
 
                 // Verificar se o cursor tem resultados
                 if (cursor.moveToFirst()) {
