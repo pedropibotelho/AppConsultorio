@@ -101,6 +101,7 @@ public class TelaPrincipal extends AppCompatActivity {
                         ", id_paciente INTEGER" +
                         ", data_procedimento DATE" +
                         ", procedimento VARCHAR" +
+                        ", preco FLOAT" +
                         ", FOREIGN KEY (id_paciente) REFERENCES paciente(id))");
             }
 
