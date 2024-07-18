@@ -1,4 +1,5 @@
 package com.example.appconsultorio.ui.consulta;
+
 public class Consulta {
     private String data;
     private String procedimento;
@@ -18,7 +19,7 @@ public class Consulta {
         return procedimento;
     }
 
-    public float getPreco(){
+    public float getPreco() {
         return preco;
     }
 }

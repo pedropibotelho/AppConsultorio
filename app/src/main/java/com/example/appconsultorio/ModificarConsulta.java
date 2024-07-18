@@ -34,6 +34,7 @@ public class ModificarConsulta extends AppCompatActivity {
     private AutoCompleteTextView autoCompleteTextView;
     private EditText edtDataConsulta;
     private EditText edtProcedimento;
+    private EditText edtPreco;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class ModificarConsulta extends AppCompatActivity {
         autoCompleteTextView = findViewById(R.id.autoedit_data_consulta_procurar_modificar);
         edtDataConsulta = findViewById(R.id.edit_data_consulta_modificar);
         edtProcedimento = findViewById(R.id.edit_procedimento_consulta_modificar);
+        edtPreco = findViewById(R.id.edit_preco_consulta_modificar);
 
         if (autoCompleteTextView != null) {
             configAutoCompleteTextView(autoCompleteTextView);
@@ -158,18 +160,16 @@ public class ModificarConsulta extends AppCompatActivity {
     @SuppressLint("Range")
     public void consultarConsulta(String dataAutoIncrement){
         if (!dataAutoIncrement.isEmpty()) {
-            // Realizar a busca no banco de dados pelo nome do paciente
             int idPaciente = buscarIdPaciente(nomePaciente);
             String idPacienteString = String.valueOf(idPaciente);
             Cursor cursor = null;
             try {
                 cursor = db.rawQuery("SELECT * FROM consulta WHERE data_procedimento=? AND id_paciente = ?", new String[]{dataAutoIncrement, idPacienteString});
 
-                // Verificar se o cursor tem resultados
                 if (cursor.moveToFirst()) {
-                    // Preencher os EditTexts com as informações do paciente
                     edtDataConsulta.setText(cursor.getString(cursor.getColumnIndex("data_procedimento")));
                     edtProcedimento.setText(cursor.getString(cursor.getColumnIndex("procedimento")));
+                    edtPreco.setText(String.valueOf(cursor.getFloat(cursor.getColumnIndex("preco"))));
 
                     editTextComportamento(true);
                     Toast.makeText(this, "Consulta encontrada", Toast.LENGTH_SHORT).show();
@@ -190,7 +190,7 @@ public class ModificarConsulta extends AppCompatActivity {
     }
 
     public void editTextComportamento(boolean op) {
-        if (edtDataConsulta == null || edtProcedimento == null) {
+        if (edtDataConsulta == null || edtProcedimento == null || edtPreco == null) {
             Log.e(TAG, "EditTexts are not initialized");
             return;
         }
@@ -200,13 +200,18 @@ public class ModificarConsulta extends AppCompatActivity {
             edtDataConsulta.setFocusableInTouchMode(true);
             edtProcedimento.setFocusable(true);
             edtProcedimento.setFocusableInTouchMode(true);
+            edtPreco.setFocusable(true);
+            edtPreco.setFocusableInTouchMode(true);
         } else {
             edtDataConsulta.setText("");
             edtProcedimento.setText("");
+            edtPreco.setText("");
             edtDataConsulta.setFocusable(false);
             edtDataConsulta.setFocusableInTouchMode(false);
             edtProcedimento.setFocusable(false);
             edtProcedimento.setFocusableInTouchMode(false);
+            edtPreco.setFocusable(false);
+            edtPreco.setFocusableInTouchMode(false);
         }
     }
 
@@ -214,8 +219,9 @@ public class ModificarConsulta extends AppCompatActivity {
         if (!dataAutoIncrement.isEmpty()) {
             String dataConsultaText = edtDataConsulta.getText().toString().trim();
             String procedimentoText = edtProcedimento.getText().toString().trim();
+            String precoText = edtPreco.getText().toString().trim();
 
-            if (dataConsultaText.isEmpty() || procedimentoText.isEmpty()) {
+            if (dataConsultaText.isEmpty() || procedimentoText.isEmpty() || precoText.isEmpty()) {
                 Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
             } else if (dataConsultaText.contains("_")) {
                 Toast.makeText(this, "Preencha todos os campos corretamente para realizar a alteração!", Toast.LENGTH_SHORT).show();
@@ -230,11 +236,12 @@ public class ModificarConsulta extends AppCompatActivity {
                         return;
                     }
 
-                    // Atualizar a consulta no banco de dados
+                    float preco = Float.parseFloat(precoText);
+
                     int idPaciente = buscarIdPaciente(nomePaciente);
                     if (idPaciente != -1) {
-                        db.execSQL("UPDATE consulta SET data_procedimento = ?, procedimento = ? WHERE id_paciente = ? AND data_procedimento = ?",
-                                new Object[]{dataConsultaText, procedimentoText, idPaciente, dataAutoIncrement});
+                        db.execSQL("UPDATE consulta SET data_procedimento = ?, procedimento = ?, preco = ? WHERE id_paciente = ? AND data_procedimento = ?",
+                                new Object[]{dataConsultaText, procedimentoText, preco, idPaciente, dataAutoIncrement});
 
                         Toast.makeText(this, "Consulta alterada com sucesso!", Toast.LENGTH_SHORT).show();
                         editTextComportamento(false);
@@ -255,10 +262,8 @@ public class ModificarConsulta extends AppCompatActivity {
     public void excluirConsulta(String dataAutoIncrement){
         if (!dataAutoIncrement.isEmpty()) {
             try {
-                // Obter o ID do paciente
                 int idPaciente = buscarIdPaciente(nomePaciente);
                 if (idPaciente != -1) {
-                    // Excluir a consulta no banco de dados
                     db.execSQL("DELETE FROM consulta WHERE id_paciente = ? AND data_procedimento = ?", new Object[]{idPaciente, dataAutoIncrement});
 
                     Toast.makeText(this, "Consulta excluída com sucesso!", Toast.LENGTH_SHORT).show();
