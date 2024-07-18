@@ -31,6 +31,7 @@ public class ConsultaFragment extends Fragment {
     private static final String TAG = "ConsultaFrag";
     private FragmentConsultaBinding binding;
     private SQLiteDatabase db;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,11 +93,13 @@ public class ConsultaFragment extends Fragment {
             EditText edtNomePacineteConsulta = getView().findViewById(R.id.autoedit_nome_paciente_consulta);
             EditText edtDataConsulta = getView().findViewById(R.id.edit_data_consulta);
             EditText edtProcedimento = getView().findViewById(R.id.edit_procedimento_consulta);
+            EditText edtPreco = getView().findViewById(R.id.edit_preço_consulta); // Corrigido o ID aqui
             String nomePacineteConsultaText = edtNomePacineteConsulta.getText().toString();
             String dataConsultaText = edtDataConsulta.getText().toString();
             String procedimentoText = edtProcedimento.getText().toString();
+            float precoFloat = Float.parseFloat(edtPreco.getText().toString());
 
-            if(nomePacineteConsultaText.isEmpty() || dataConsultaText.isEmpty() || procedimentoText.isEmpty()){
+            if(nomePacineteConsultaText.isEmpty() || dataConsultaText.isEmpty() || procedimentoText.isEmpty() || precoFloat == 0){
                 Toast.makeText(getContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
             }else if(dataConsultaText.contains("_")){
                 Toast.makeText(getContext(), "Preencha o campo de data de maneira correta", Toast.LENGTH_SHORT).show();
@@ -112,17 +115,18 @@ public class ConsultaFragment extends Fragment {
                     }
 
                     String idPacienteString = String.valueOf(idPaciente);
-                    Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM consulta WHERE id_paciente=? AND data_procedimento=? AND procedimento=?", new String[]{idPacienteString, dataConsultaText, procedimentoText});
+                    Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM consulta WHERE id_paciente=? AND data_procedimento=? AND procedimento=? AND preco=?", new String[]{idPacienteString, dataConsultaText, procedimentoText, String.valueOf(precoFloat)});
                     cursor.moveToFirst();
                     int count = cursor.getInt(0);
                     cursor.close();
 
                     if(count == 0){
-                        db.execSQL("INSERT INTO consulta (id_paciente, data_procedimento, procedimento) VALUES (?, ?, ?)", new String[]{idPacienteString, dataConsultaText, procedimentoText});
+                        db.execSQL("INSERT INTO consulta (id_paciente, data_procedimento, procedimento, preco) VALUES (?, ?, ?, ?)", new String[]{idPacienteString, dataConsultaText, procedimentoText, String.valueOf(precoFloat)});
                         Toast.makeText(getContext(), "Consulta cadastrada com sucesso!", Toast.LENGTH_SHORT).show();
                         edtNomePacineteConsulta.setText("");
                         edtDataConsulta.setText("");
                         edtProcedimento.setText("");
+                        edtPreco.setText(""); // Limpa o campo de preço após cadastrar
                     }else {
                         Toast.makeText(getContext(), "Consulta já cadastrada!", Toast.LENGTH_SHORT).show();
                     }

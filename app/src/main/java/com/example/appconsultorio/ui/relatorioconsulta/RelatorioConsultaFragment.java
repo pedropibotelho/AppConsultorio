@@ -128,7 +128,8 @@ public class RelatorioConsultaFragment extends Fragment {
                 while (cursor.moveToNext()){
                     @SuppressLint("Range") String data = cursor.getString(cursor.getColumnIndex("data_procedimento"));
                     @SuppressLint("Range") String procedimento = cursor.getString(cursor.getColumnIndex("procedimento"));
-                    consultaList.add(new Consulta(data, procedimento));
+                    @SuppressLint("Range") float preco = cursor.getFloat(cursor.getColumnIndex("preco"));
+                    consultaList.add(new Consulta(data, procedimento, preco));
                 }
                 consultaAdapter.notifyDataSetChanged();
                 btnModificar.setEnabled(true);
