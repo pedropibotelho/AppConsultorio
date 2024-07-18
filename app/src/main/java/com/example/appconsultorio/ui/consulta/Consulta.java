@@ -3,7 +3,7 @@ package com.example.appconsultorio.ui.consulta;
 public class Consulta {
     private String data;
     private String procedimento;
-    private float preco;
+    private float preco = 0.00F;
 
     public Consulta(String data, String procedimento, float preco) {
         this.data = data;

@@ -97,9 +97,9 @@ public class ConsultaFragment extends Fragment {
             String nomePacineteConsultaText = edtNomePacineteConsulta.getText().toString();
             String dataConsultaText = edtDataConsulta.getText().toString();
             String procedimentoText = edtProcedimento.getText().toString();
-            float precoFloat = Float.parseFloat(edtPreco.getText().toString());
+            String precoFloat = edtPreco.getText().toString();
 
-            if(nomePacineteConsultaText.isEmpty() || dataConsultaText.isEmpty() || procedimentoText.isEmpty() || precoFloat == 0){
+            if(nomePacineteConsultaText.isEmpty() || dataConsultaText.isEmpty() || procedimentoText.isEmpty() || precoFloat.isEmpty()){
                 Toast.makeText(getContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
             }else if(dataConsultaText.contains("_")){
                 Toast.makeText(getContext(), "Preencha o campo de data de maneira correta", Toast.LENGTH_SHORT).show();
@@ -115,13 +115,13 @@ public class ConsultaFragment extends Fragment {
                     }
 
                     String idPacienteString = String.valueOf(idPaciente);
-                    Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM consulta WHERE id_paciente=? AND data_procedimento=? AND procedimento=? AND preco=?", new String[]{idPacienteString, dataConsultaText, procedimentoText, String.valueOf(precoFloat)});
+                    Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM consulta WHERE id_paciente=? AND data_procedimento=? AND procedimento=? AND preco=?", new String[]{idPacienteString, dataConsultaText, procedimentoText, precoFloat});
                     cursor.moveToFirst();
                     int count = cursor.getInt(0);
                     cursor.close();
 
                     if(count == 0){
-                        db.execSQL("INSERT INTO consulta (id_paciente, data_procedimento, procedimento, preco) VALUES (?, ?, ?, ?)", new String[]{idPacienteString, dataConsultaText, procedimentoText, String.valueOf(precoFloat)});
+                        db.execSQL("INSERT INTO consulta (id_paciente, data_procedimento, procedimento, preco) VALUES (?, ?, ?, ?)", new String[]{idPacienteString, dataConsultaText, procedimentoText, precoFloat});
                         Toast.makeText(getContext(), "Consulta cadastrada com sucesso!", Toast.LENGTH_SHORT).show();
                         edtNomePacineteConsulta.setText("");
                         edtDataConsulta.setText("");
