@@ -20,5 +20,10 @@
             android:id="@+id/nav_relatorio_consulta"
             android:icon="@drawable/ic_relatorio"
             android:title="Relatório de Consultas"/>
+        <item
+            android:id="@+id/nav_financas"
+            android:icon="@drawable/ic_financas"
+            android:title="Finanças"
+        />
     </group>
 </menu>
