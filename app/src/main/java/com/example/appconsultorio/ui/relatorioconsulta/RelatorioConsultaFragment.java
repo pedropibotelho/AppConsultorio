@@ -124,7 +124,7 @@ public class RelatorioConsultaFragment extends Fragment {
             String idPacienteString = String.valueOf(idPaciente);
             Cursor cursor = null;
             try {
-                cursor = db.rawQuery("SELECT data_procedimento, procedimento FROM consulta WHERE id_paciente = ?", new String[]{idPacienteString});
+                cursor = db.rawQuery("SELECT data_procedimento, procedimento, preco FROM consulta WHERE id_paciente = ?", new String[]{idPacienteString});
                 while (cursor.moveToNext()){
                     @SuppressLint("Range") String data = cursor.getString(cursor.getColumnIndex("data_procedimento"));
                     @SuppressLint("Range") String procedimento = cursor.getString(cursor.getColumnIndex("procedimento"));
@@ -146,6 +146,7 @@ public class RelatorioConsultaFragment extends Fragment {
             Toast.makeText(getContext(), "Paciente inválido!", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     @SuppressLint("Range")
     public int buscarIdPaciente(String nomePaciente){
