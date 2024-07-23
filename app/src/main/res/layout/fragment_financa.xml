@@ -35,7 +35,7 @@
             android:layout_marginTop="28dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
-            android:hint="Digite o ano"
+            android:hint="Digite o Ano"
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -56,6 +56,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_financa_ano"
             tools:layout_editor_absoluteX="13dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/butao_procurar_financa"
+            android:text="Procurar"
+            style="@style/ButtonLogin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spinner_mes"
+            />
+
+        <EditText
+            android:id="@+id/edit_financa_valor_total"
+            style="@style/Edit_Text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="Valor Total"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/butao_procurar_financa" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
