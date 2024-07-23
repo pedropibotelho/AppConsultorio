@@ -39,12 +39,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Exemplo de migração para a versão 2, adicionando a coluna preco
+
 
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Se necessário, implemente o downgrade
+
     }
 }

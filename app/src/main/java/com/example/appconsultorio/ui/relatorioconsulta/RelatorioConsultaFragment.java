@@ -29,8 +29,13 @@ import com.example.appconsultorio.ui.consulta.Consulta;
 import com.example.appconsultorio.ui.consulta.ConsultaAdapter;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class RelatorioConsultaFragment extends Fragment {
 
@@ -131,6 +136,7 @@ public class RelatorioConsultaFragment extends Fragment {
                     @SuppressLint("Range") float preco = cursor.getFloat(cursor.getColumnIndex("preco"));
                     consultaList.add(new Consulta(data, procedimento, preco));
                 }
+                ordernarConsultasPorDatas(consultaList);
                 consultaAdapter.notifyDataSetChanged();
                 btnModificar.setEnabled(true);
                 Toast.makeText(getContext(), "Relatório de Consultas completo!", Toast.LENGTH_SHORT).show();
@@ -161,5 +167,21 @@ public class RelatorioConsultaFragment extends Fragment {
             cursor.close();
         }
         return idPaciente;
+    }
+
+    private void ordernarConsultasPorDatas(List<Consulta> consultas){
+        Collections.sort(consultas, (consulta1, consulta2) -> {
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            try {
+                Date data1 = format.parse(consulta1.getData());
+                Date data2 = format.parse(consulta2.getData());
+                if(data1 != null && data2 != null){
+                    return data2.compareTo(data1);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
     }
 }
