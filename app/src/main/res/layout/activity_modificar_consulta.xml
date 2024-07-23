@@ -101,7 +101,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:hint="Preço"
+        android:hint="Valor"
         android:inputType="text"
         android:focusable="false"
         android:focusableInTouchMode="false"
