@@ -46,5 +46,8 @@ public class FinancaFragment extends Fragment {
 
         Spinner spinnerMeses = getView().findViewById(R.id.spinner_mes);
         int mesesInt = spinnerMeses.getSelectedItemPosition();
+
+        
+
     }
 }
