@@ -49,7 +49,7 @@ public class FinancaFragment extends Fragment {
         int mesesInt =(int) spinnerMeses.getSelectedItemId();
 
         Log.e(TAG, "Mes " + mesesInt);
-        
+
 
 
     }
