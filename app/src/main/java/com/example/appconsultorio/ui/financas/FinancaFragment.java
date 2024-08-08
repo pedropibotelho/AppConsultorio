@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.appconsultorio.R;
 import com.example.appconsultorio.databinding.FragmentFinancaBinding;
@@ -32,7 +33,7 @@ public class FinancaFragment extends Fragment {
         btnProcurar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                calcularValor();
             }
         });
 
@@ -45,9 +46,11 @@ public class FinancaFragment extends Fragment {
         String anoText = edtAno.getText().toString();
 
         Spinner spinnerMeses = getView().findViewById(R.id.spinner_mes);
-        int mesesInt = spinnerMeses.getSelectedItemPosition();
+        int mesesInt =(int) spinnerMeses.getSelectedItemId();
 
+        Log.e(TAG, "Mes " + mesesInt);
         
+
 
     }
 }
