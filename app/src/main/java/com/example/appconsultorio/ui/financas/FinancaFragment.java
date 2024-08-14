@@ -1,5 +1,7 @@
 package com.example.appconsultorio.ui.financas;
 
+import android.annotation.SuppressLint;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -22,7 +24,9 @@ public class FinancaFragment extends Fragment {
     private static final String TAG = "FinancasFrag";
     private FragmentFinancaBinding binding;
     private SQLiteDatabase db;
-    private DatabaseHelper dh;
+    private DatabaseHelper dh;]
+
+    float valorTotal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +48,7 @@ public class FinancaFragment extends Fragment {
         return rootView;
     }
 
+    @SuppressLint("Range")
     public void calcularValor(){
         EditText edtAno = getView().findViewById(R.id.edit_financa_ano);
         String anoText = edtAno.getText().toString();
@@ -53,6 +58,18 @@ public class FinancaFragment extends Fragment {
 
         Log.e(TAG, "Mes " + mesesInt);
 
+        Cursor cursor;
+
+        switch (mesesInt){
+            case 0:
+                cursor = db.rawQuery("SELECT SUM(preco) AS total_valor FROM consulta WHERE substr(data_procedimento, 7, 4) = ? ", new String[]{anoText});
+                if(cursor.moveToFirst()){
+                    valorTotal = cursor.getFloat(cursor.getColumnIndex("total_valor"));
+                }
+                cursor.close();
+                break;
+        }
+        edtAno.setText(String.valueOf(valorTotal));
 
 
     }
