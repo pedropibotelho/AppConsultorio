@@ -24,7 +24,7 @@ public class FinancaFragment extends Fragment {
     private static final String TAG = "FinancasFrag";
     private FragmentFinancaBinding binding;
     private SQLiteDatabase db;
-    private DatabaseHelper dh;]
+    private DatabaseHelper dh;
 
     float valorTotal;
 
@@ -69,7 +69,8 @@ public class FinancaFragment extends Fragment {
                 cursor.close();
                 break;
         }
-        edtAno.setText(String.valueOf(valorTotal));
+        EditText edtValorTotal = getView().findViewById(R.id.edit_financa_valor_total);
+        edtValorTotal.setText(String.valueOf(valorTotal));
 
 
     }
