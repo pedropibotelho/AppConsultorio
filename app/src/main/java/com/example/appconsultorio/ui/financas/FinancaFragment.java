@@ -68,9 +68,11 @@ public class FinancaFragment extends Fragment {
                 }
                 cursor.close();
                 break;
+            
         }
         EditText edtValorTotal = getView().findViewById(R.id.edit_financa_valor_total);
         edtValorTotal.setText(String.valueOf(valorTotal));
+        Toast.makeText(getContext(), "Valor calculado com sucesso!", Toast.LENGTH_SHORT).show();
 
 
     }
