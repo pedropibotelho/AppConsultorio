@@ -34,7 +34,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", data_procedimento DATE" +
                 ", procedimento VARCHAR" +
                 ", preco FLOAT" +
-                ", FOREIGN KEY (id_paciente) REFERENCES paciente(id))");  // Sem a coluna preco na versão 1
+                ", FOREIGN KEY (id_paciente) REFERENCES paciente(id))");
+
     }
 
     @Override

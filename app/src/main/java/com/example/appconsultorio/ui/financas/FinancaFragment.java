@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.appconsultorio.DatabaseHelper;
 import com.example.appconsultorio.R;
 import com.example.appconsultorio.databinding.FragmentFinancaBinding;
 
@@ -21,6 +22,7 @@ public class FinancaFragment extends Fragment {
     private static final String TAG = "FinancasFrag";
     private FragmentFinancaBinding binding;
     private SQLiteDatabase db;
+    private DatabaseHelper dh;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +39,8 @@ public class FinancaFragment extends Fragment {
             }
         });
 
-        db = getActivity().openOrCreateDatabase("appconsultorio", getContext().MODE_PRIVATE, null);
+        dh = new DatabaseHelper(getContext());
+        db = dh.getWritableDatabase();
         return rootView;
     }
 

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.appconsultorio.DatabaseHelper;
 import com.example.appconsultorio.R;
 import com.example.appconsultorio.databinding.FragmentRelatorioPacienteBinding;
 
@@ -28,6 +29,7 @@ public class RelatorioPacienteFragment extends Fragment {
     private static final String TAG = "RelatorioPacienteFrag";
     private FragmentRelatorioPacienteBinding binding;
     private SQLiteDatabase db;
+    private DatabaseHelper dh;
     String nomePacienteProcurado, cpfPacienteProcurado;
 
     @Override
@@ -68,7 +70,8 @@ public class RelatorioPacienteFragment extends Fragment {
             }
         });
 
-        db = getActivity().openOrCreateDatabase("appconsultorio", getContext().MODE_PRIVATE, null);
+        dh = new DatabaseHelper(getContext());
+        db = dh.getWritableDatabase();
 
         return rootView;
     }

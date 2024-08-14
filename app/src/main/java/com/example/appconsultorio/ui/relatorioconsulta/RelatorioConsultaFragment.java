@@ -22,6 +22,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.appconsultorio.DatabaseHelper;
 import com.example.appconsultorio.ModificarConsulta;
 import com.example.appconsultorio.R;
 import com.example.appconsultorio.databinding.FragmentRelatorioConsultaBinding;
@@ -42,6 +43,7 @@ public class RelatorioConsultaFragment extends Fragment {
     private static final String TAG = "RelatorioConsultaFrag";
     private FragmentRelatorioConsultaBinding binding;
     private SQLiteDatabase db;
+    private DatabaseHelper dh;
 
     private RecyclerView recyclerView;
     private ConsultaAdapter consultaAdapter;
@@ -86,7 +88,8 @@ public class RelatorioConsultaFragment extends Fragment {
             }
         });
 
-        db = getActivity().openOrCreateDatabase("appconsultorio", getContext().MODE_PRIVATE, null);
+        dh = new DatabaseHelper(getContext());
+        db = dh.getWritableDatabase();
         return rootView;
     }
 
@@ -108,7 +111,6 @@ public class RelatorioConsultaFragment extends Fragment {
     }
 
     @SuppressLint("Range")
-//    Basicamente atualiza a lista que é mostrada no TextView filtrando de acordo com os pacientes cadastrados
     private void atualizacaoLista(String searchQuery, AutoCompleteTextView textView) {
         Cursor cursor = db.rawQuery("SELECT nome FROM paciente WHERE nome LIKE ?", new String[]{"%" + searchQuery + "%"});
         ArrayList<String> names = new ArrayList<>();

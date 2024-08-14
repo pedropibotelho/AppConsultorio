@@ -28,6 +28,7 @@ import java.util.Locale;
 public class ModificarConsulta extends AppCompatActivity {
 
     private SQLiteDatabase db;
+    private DatabaseHelper dh;
     private String nomePaciente;
     private static final String TAG = "ModificarConsulta";
 
@@ -64,6 +65,9 @@ public class ModificarConsulta extends AppCompatActivity {
             return;
         }
 
+        dh = new DatabaseHelper(this);
+        db = dh.getWritableDatabase();
+
         Button btnProcurar = findViewById(R.id.butao_procurar_data_modificar);
         btnProcurar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,13 +94,8 @@ public class ModificarConsulta extends AppCompatActivity {
                 excluirConsulta(dataAutoIncrement);
             }
         });
-
-        try {
-            db = openOrCreateDatabase("appconsultorio", MODE_PRIVATE, null);
-        } catch (Exception e) {
-            Log.e(TAG, "Erro ao abrir ou criar o banco de dados", e);
-        }
     }
+
 
     private void configAutoCompleteTextView(AutoCompleteTextView textView) {
         textView.addTextChangedListener(new TextWatcher() {
