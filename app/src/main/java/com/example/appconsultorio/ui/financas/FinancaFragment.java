@@ -55,25 +55,30 @@ public class FinancaFragment extends Fragment {
 
         Spinner spinnerMeses = getView().findViewById(R.id.spinner_mes);
         int mesesInt =(int) spinnerMeses.getSelectedItemId();
+        String mesFormatado = String.format("%02d", mesesInt);
 
         Log.e(TAG, "Mes " + mesesInt);
 
         Cursor cursor;
-
-        switch (mesesInt){
-            case 0:
+        if(!anoText.isEmpty()) {
+            if(mesesInt == 0) {
                 cursor = db.rawQuery("SELECT SUM(preco) AS total_valor FROM consulta WHERE substr(data_procedimento, 7, 4) = ? ", new String[]{anoText});
-                if(cursor.moveToFirst()){
+                if (cursor.moveToFirst()) {
                     valorTotal = cursor.getFloat(cursor.getColumnIndex("total_valor"));
                 }
                 cursor.close();
-                break;
-            
-        }
-        EditText edtValorTotal = getView().findViewById(R.id.edit_financa_valor_total);
-        edtValorTotal.setText(String.valueOf(valorTotal));
-        Toast.makeText(getContext(), "Valor calculado com sucesso!", Toast.LENGTH_SHORT).show();
-
+            }else {
+                cursor = db.rawQuery("SELECT SUM(preco) AS total_valor FROM consulta WHERE substr(data_procedimento, 7, 4) = ? AND substr(data_procedimento, 4, 2) = ? ", new String[]{anoText, mesFormatado});
+                if (cursor.moveToFirst()) {
+                    valorTotal = cursor.getFloat(cursor.getColumnIndex("total_valor"));
+                }
+                cursor.close();
+            }
+            EditText edtValorTotal = getView().findViewById(R.id.edit_financa_valor_total);
+            edtValorTotal.setText("R$" + valorTotal);
+            Toast.makeText(getContext(), "Valor calculado com sucesso!", Toast.LENGTH_SHORT).show();
+        }else
+            Toast.makeText(getContext(), "Digite o ano!", Toast.LENGTH_SHORT).show();
 
     }
 }
