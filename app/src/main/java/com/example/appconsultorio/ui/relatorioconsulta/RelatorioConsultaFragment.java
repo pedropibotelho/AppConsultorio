@@ -22,6 +22,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.appconsultorio.DatabaseHelper;
 import com.example.appconsultorio.ModificarConsulta;
 import com.example.appconsultorio.R;
 import com.example.appconsultorio.databinding.FragmentRelatorioConsultaBinding;
@@ -29,14 +30,20 @@ import com.example.appconsultorio.ui.consulta.Consulta;
 import com.example.appconsultorio.ui.consulta.ConsultaAdapter;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class RelatorioConsultaFragment extends Fragment {
 
     private static final String TAG = "RelatorioConsultaFrag";
     private FragmentRelatorioConsultaBinding binding;
     private SQLiteDatabase db;
+    private DatabaseHelper dh;
 
     private RecyclerView recyclerView;
     private ConsultaAdapter consultaAdapter;
@@ -81,7 +88,8 @@ public class RelatorioConsultaFragment extends Fragment {
             }
         });
 
-        db = getActivity().openOrCreateDatabase("appconsultorio", getContext().MODE_PRIVATE, null);
+        dh = new DatabaseHelper(getContext());
+        db = dh.getWritableDatabase();
         return rootView;
     }
 
@@ -103,7 +111,6 @@ public class RelatorioConsultaFragment extends Fragment {
     }
 
     @SuppressLint("Range")
-//    Basicamente atualiza a lista que é mostrada no TextView filtrando de acordo com os pacientes cadastrados
     private void atualizacaoLista(String searchQuery, AutoCompleteTextView textView) {
         Cursor cursor = db.rawQuery("SELECT nome FROM paciente WHERE nome LIKE ?", new String[]{"%" + searchQuery + "%"});
         ArrayList<String> names = new ArrayList<>();
@@ -124,12 +131,14 @@ public class RelatorioConsultaFragment extends Fragment {
             String idPacienteString = String.valueOf(idPaciente);
             Cursor cursor = null;
             try {
-                cursor = db.rawQuery("SELECT data_procedimento, procedimento FROM consulta WHERE id_paciente = ?", new String[]{idPacienteString});
+                cursor = db.rawQuery("SELECT data_procedimento, procedimento, preco FROM consulta WHERE id_paciente = ?", new String[]{idPacienteString});
                 while (cursor.moveToNext()){
                     @SuppressLint("Range") String data = cursor.getString(cursor.getColumnIndex("data_procedimento"));
                     @SuppressLint("Range") String procedimento = cursor.getString(cursor.getColumnIndex("procedimento"));
-                    consultaList.add(new Consulta(data, procedimento));
+                    @SuppressLint("Range") float preco = cursor.getFloat(cursor.getColumnIndex("preco"));
+                    consultaList.add(new Consulta(data, procedimento, preco));
                 }
+                ordernarConsultasPorDatas(consultaList);
                 consultaAdapter.notifyDataSetChanged();
                 btnModificar.setEnabled(true);
                 Toast.makeText(getContext(), "Relatório de Consultas completo!", Toast.LENGTH_SHORT).show();
@@ -146,6 +155,7 @@ public class RelatorioConsultaFragment extends Fragment {
         }
     }
 
+
     @SuppressLint("Range")
     public int buscarIdPaciente(String nomePaciente){
         int idPaciente = -1;
@@ -159,5 +169,21 @@ public class RelatorioConsultaFragment extends Fragment {
             cursor.close();
         }
         return idPaciente;
+    }
+
+    private void ordernarConsultasPorDatas(List<Consulta> consultas){
+        Collections.sort(consultas, (consulta1, consulta2) -> {
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            try {
+                Date data1 = format.parse(consulta1.getData());
+                Date data2 = format.parse(consulta2.getData());
+                if(data1 != null && data2 != null){
+                    return data2.compareTo(data1);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
     }
 }

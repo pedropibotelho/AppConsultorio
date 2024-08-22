@@ -48,6 +48,7 @@ public class FormLogin extends AppCompatActivity {
             Intent i = new Intent(FormLogin.this, TelaPrincipal.class);
             Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
             startActivity(i);
+            finish();
         } else {
             Toast.makeText(this, "Usuário ou senha incorretos.", Toast.LENGTH_SHORT).show();
         }

@@ -92,13 +92,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_data_consulta_modificar" />
 
+    <EditText
+        android:id="@+id/edit_preco_consulta_modificar"
+        style="@style/Edit_Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Valor"
+        android:inputType="text"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_procedimento_consulta_modificar" />
+
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/butao_alterar_consulta_modificar"
         android:text="Alterar"
         style="@style/ButtonLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_procedimento_consulta_modificar"
+        app:layout_constraintTop_toBottomOf="@id/edit_preco_consulta_modificar"
         />
 
     <androidx.appcompat.widget.AppCompatButton

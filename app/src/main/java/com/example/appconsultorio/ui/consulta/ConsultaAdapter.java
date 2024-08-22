@@ -32,6 +32,7 @@ public class ConsultaAdapter extends RecyclerView.Adapter<ConsultaAdapter.Consul
         Consulta consulta = consultas.get(position);
         holder.dataTextView.setText(consulta.getData());
         holder.procedimentoTextView.setText(consulta.getProcedimento());
+        holder.precoTextView.setText(String.valueOf(consulta.getPreco()));
     }
 
     @Override
@@ -42,11 +43,13 @@ public class ConsultaAdapter extends RecyclerView.Adapter<ConsultaAdapter.Consul
     static class ConsultaViewHolder extends RecyclerView.ViewHolder {
         TextView dataTextView;
         TextView procedimentoTextView;
+        TextView precoTextView;
 
         public ConsultaViewHolder(@NonNull View itemView) {
             super(itemView);
             dataTextView = itemView.findViewById(R.id.text_view_data);
             procedimentoTextView = itemView.findViewById(R.id.text_view_procedimento);
+            precoTextView = itemView.findViewById(R.id.text_view_preco);
         }
     }
 }

@@ -29,4 +29,11 @@
         android:label="Relatório de Consultas"
         tools:layout="@layout/fragment_relatorio_consulta"
         />
+
+    <fragment
+        android:id="@+id/nav_financas"
+        android:name="com.example.appconsultorio.ui.financas.FinancaFragment"
+        android:label="Finanças"
+        tools:layout="@layout/fragment_financa"
+        />
 </navigation>
